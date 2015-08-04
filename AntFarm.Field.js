@@ -2,6 +2,7 @@ AntFarm.Field = Class.extend({
 
   objects: [],
   ids: [],
+  margin: 30,
 
   // accepts interval in ms
   init: function(interval) {
@@ -21,8 +22,9 @@ AntFarm.Field = Class.extend({
 
     this.run = function() {
       for (var i in field.objects) {
-        field.objects[i].run();
         field.objects[i].position();
+        field.objects[i].appearance();
+        field.objects[i].run();
       }
     }
 
@@ -60,9 +62,8 @@ AntFarm.Field = Class.extend({
 
   setup: function() {
 
-    var margin = 30;
-    this.height = $(window).height()-(margin*3);
-    this.width =  $(window).width() -(margin*2);
+    this.height = $(window).height()-(this.margin*3);
+    this.width =  $(window).width() -(this.margin*2);
     $('.field').height(this.height);
     $('.field').width(this.width);
     $('.field').append('<canvas width="'+this.width+'" height="'+this.height+'"></canvas>');
