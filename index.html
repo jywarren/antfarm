@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    <title>Ant Farm</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="bower_components/bootstrap-css/css/bootstrap.css" rel="stylesheet">
+    <link href="bower_components/fontawesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="antfarm.css" rel="stylesheet">
+
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap-css/js/bootstrap.min.js"></script>
+    <script src="Base.js"></script>
+    <script src="Class.js"></script>
+    <script src="AntFarm.Field.js"></script>
+    <script src="AntFarm.Ant.js"></script>
+
+    <script>
+      var field;
+
+      jQuery(document).ready(function($) {
+
+        field = new AntFarm.Field(50);
+
+        field.populate(AntFarm.Ant,25);
+
+      });
+    </script>
+
+  </head>
+
+  <body>
+
+    <div class="container-fluid">
+
+      <div class="field">
+        
+      </div>
+
+      <p class="controls">
+        <span>
+          <b>Ant</b>
+          <!-- <a class="btn btn-lg"><i class="fa fa-asterisk"> Run</i></a> -->
+          <a class="btn btn-lg" href="https://github.com/jywarren/antfarm"><i class="fa fa-github"></i></a>
+          <b>Farm</b>
+        </span>
+      </p>
+ 
+    </div>
+
+  </body>
+
+</html>
