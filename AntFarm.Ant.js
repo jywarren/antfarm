@@ -76,19 +76,23 @@ AntFarm.Ant = Class.extend({
     }
     this.el.on('dblclick', ant.edit);
 
-    field.el.on("mousemove", function(e) {
+    field.el.on("mousemove touchmove", function(e) {
         if (ant.dragging) {
+          e.preventDefault();
+          if (e.changedTouches) { // if it's a touch event
+            e = e.changedTouches[0] // reference first finger touch
+          }
           ant.x = e.pageX-field.margin;
           ant.y = e.pageY-field.margin;
           ant.position();
         }
     });
 
-    this.el.on("mousedown", function (e) {
+    this.el.on("mousedown touchstart", function (e) {
         ant.dragging = true;
     });
 
-    this.el.on("mouseup", function (e) {
+    this.el.on("mouseup touchend", function (e) {
         ant.dragging = false;
     });
 
