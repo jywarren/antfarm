@@ -41,6 +41,8 @@ html {
   border: 1px solid red;
   position: absolute;
   z-index:3;
+  -webkit-transition: width 1s, height 1s, border-color 2s, background-color 2s; /*, -webkit-transform 1s; */
+  transition:         width 1s, height 1s, border-color 2s, background-color 2s; /*, transform 1s; */
 }
 
 .modal textarea.script {
