@@ -20,6 +20,7 @@ html {
 
 .controls {
   width: 100%;
+  padding-right:20px;
 }
 
 .controls span {
@@ -40,4 +41,9 @@ html {
   border: 1px solid red;
   position: absolute;
   z-index:3;
+}
+
+.modal textarea.script {
+  width:100%;
+  height:400px;
 }
