@@ -3,6 +3,7 @@ AntFarm.Field = Class.extend({
   objects: [],
   ids: [],
   margin: 30,
+  playing: true,
 
   // accepts interval in ms
   init: function(interval) {
@@ -21,11 +22,19 @@ AntFarm.Field = Class.extend({
     }
 
     this.run = function() {
-      for (var i in field.objects) {
-        field.objects[i].position();
-        field.objects[i].appearance();
-        field.objects[i].run();
+      if (field.playing) {
+        for (var i in field.objects) {
+          field.objects[i].position();
+          field.objects[i].appearance();
+          field.objects[i].run();
+        }
       }
+    }
+
+    this.togglePlay = function() {
+      field.playing = !field.playing;
+      $('.on-off i').toggleClass('fa-play');
+      $('.on-off i').toggleClass('fa-pause');
     }
 
     this.interval = setInterval(this.run,interval);
@@ -36,19 +45,69 @@ AntFarm.Field = Class.extend({
       }
     }
 
+    // [r,g,b,a] where each can be 0-255
+    // needs color revision
     this.get = function(x,y) {
       var p = field.canvas.getImageData(x, y, 1, 1).data; 
       //var hex = "#" + ("000000" + rgbToHex(p[0], p[1], p[2])).slice(-6);
       return p;
     }
+
+    this.color = function(x, y, color, val) {
+      if (val) {
+        px[0] = val;
+        field.set(x, y, px);
+      }
+    }
+
+    this.red = function(x, y, val) {
+      var px = field.get(x, y);
+      if (val) field.color(x, y, 0, val);
+      return px[0];
+    }
+
+    this.green = function(x, y, val) {
+      var px = field.get(x, y);
+      if (val) field.color(x, y, 1, val);
+      return px[1];
+    }
+
+    this.blue = function(x, y, val) {
+      var px = field.get(x, y);
+      if (val) field.color(x, y, 2, val);
+      return px[2];
+    }
+
+    this.alpha = function(x, y, val) {
+      var px = field.get(x, y);
+      if (val) field.color(x, y, 3, val);
+      return px[3];
+    }
+
+    this.darkenRed = function(x, y, val) {
+      this.darken(x, y, "red", val);
+    }
+
+    this.darkenGreen = function(x, y, val) {
+      this.darken(x, y, "green", val);
+    }
+
+    this.darkenBlue = function(x, y, val) {
+      this.darken(x, y, "blue", val);
+    }
+
+    this.darkenAlpha = function(x, y, val) {
+      this.darken(x, y, "alpha", val);
+    }
  
     this.darken = function(x,y,channel,val) {
-      var pixelData = field.canvas.getImageData(x, y, 1, 1);
-      pixelData.data[channel] -= val;
+      var pixelData = field.canvas.getImageData(x, y, 1, 1),
+          colors = ["red", "green", "blue", "alpha"];
+      pixelData.data[colors.indexOf(channel)] += val;
       field.canvas.putImageData(pixelData, x, y);
     }
  
-    this.set = function(x,y,data) {
+    this.set = function(x, y, data) {
       data[3] = data[3] || 255;
       var pixelData = field.canvas.getImageData(x, y, 1, 1);
       pixelData.data[0] = data[0]; // R
@@ -71,7 +130,7 @@ AntFarm.Field = Class.extend({
     this.el[0].style.width = this.width+'px';
     this.el[0].style.height = this.height+'px';
     this.canvas = this.el[0].getContext('2d');
-    this.canvas.fillStyle = "rgba(255,255,255,1)";
+    this.canvas.fillStyle = "rgba(0,0,0,1)";
     this.canvas.fillRect(0,0,this.width,this.height);
 
   }

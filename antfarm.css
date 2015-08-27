@@ -1,12 +1,12 @@
 html {
-  background: #ddd;
+  background: #222;
 }
 
 .field {
   position: absolute;
   left: 0;
   top: 0;
-  background: #fff;
+  background: #000;
   margin: 30px 30px 0;
   z-index:1;
 }
@@ -19,6 +19,7 @@ html {
 }
 
 .controls {
+  color: #888;
   width: 100%;
   padding-right:20px;
 }
