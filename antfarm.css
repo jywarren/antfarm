@@ -18,22 +18,21 @@ html {
   z-index:2;
 }
 
-.controls {
+.controls, .title {
   color: #888;
-  width: 100%;
-  padding-right:20px;
-}
-
-.controls span {
-  
-}
-
-.controls {
-  text-align: center;
   position: absolute;
   bottom: 0;
   height: 60px;
-  padding: 15px 0;
+  padding: 15px;
+  font-size: 20px;
+}
+
+.controls {
+  left: 20px;
+}
+
+.title {
+  right: 20px;
 }
 
 .ant {
