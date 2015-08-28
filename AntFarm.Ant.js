@@ -77,7 +77,7 @@ onBump: function() {
       ant.el.css('height', ant.height+'px');
 
       // update color
-      ant.el.css('border-color', ant.color);
+      $('ant-'+this.id+':link').css('border-color', ant.color);
     }
 
     ant.teach = function(script) {
