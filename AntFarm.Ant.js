@@ -34,7 +34,7 @@ onBump: function() {
     var ant = this;
 
     // runs just after run()
-    this.position = function() {
+    ant.position = function() {
       ant.bump = false;
 
       // limit to bounds
@@ -71,7 +71,7 @@ onBump: function() {
     }
 
     // runs just after position()
-    this.appearance = function() {
+    ant.appearance = function() {
       // set size
       ant.el.css('width',  ant.width+'px');
       ant.el.css('height', ant.height+'px');
@@ -96,7 +96,16 @@ onBump: function() {
         ant.teach($('textarea.script').val());
         $('.modal').modal({show: false});
       });
+      // teach ALL THE ANTS
+      $('.modal .save-all').click(function() {
+        field.objects.forEach(function(ant) {
+          ant.teach($('textarea.script').val());
+          $('.modal').modal({show: false});
+        });
+      });
     }
+
+    
 
     ant.el.on('dblclick', ant.edit);
 
