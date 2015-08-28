@@ -60,8 +60,8 @@ onBump: function() {
       ant.y = ant.y + Math.cos(ant.direction/180*Math.PI)*ant.speed;
  
       // set position
-      ant.el.css('left',ant.x-(ant.width/2)+'px');
-      ant.el.css('top', ant.y-(ant.height/2)+'px');
+      ant.el.css('left', ant.x-(ant.width/2)+'px');
+      ant.el.css('top',  ant.y-(ant.height/2)+'px');
 
       // rotation
       // webkit, e.g. chrome/safari
@@ -77,7 +77,7 @@ onBump: function() {
       ant.el.css('height', ant.height+'px');
 
       // update color
-      ant.el.css('border-color',ant.color);
+      ant.el.css('border-color', ant.color);
     }
 
     ant.teach = function(script) {

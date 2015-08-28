@@ -54,10 +54,14 @@ AntFarm.Field = Class.extend({
     }
 
     this.color = function(x, y, color, val) {
+      var colors = ["red", "green", "blue", "alpha"],
+          px = field.get(x, y);
+
       if (val) {
-        px[0] = val;
+        px[colors.indexOf(color)] = val;
         field.set(x, y, px);
       }
+      return px[colors.indexOf(color)];
     }
 
     this.red = function(x, y, val) {
