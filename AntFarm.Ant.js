@@ -25,6 +25,7 @@ onBump: function() {
     this.el = $('.ant-'+id);
     this.x = parseInt(Math.random()*field.width);
     this.y = parseInt(Math.random()*field.height);
+    this.age = 0;
     this.width = 10;
     this.height = 10;
     this.speed = 1;
@@ -73,6 +74,14 @@ onBump: function() {
 
     }
 
+
+    // cleans up the ant
+    _ant.remove = function() {
+      field.objects.splice(field.objects.indexOf(_ant), 1);
+      _ant.el.remove();
+    }
+
+
     // runs just after position()
     _ant.appearance = function() {
       // set size
@@ -81,7 +90,9 @@ onBump: function() {
 
       // update color
       $('.ant-'+_ant.id).css('border-color', _ant.color);
+      $('.ant-'+_ant.id+':hover').css('border-color', 'white');
     }
+
 
     _ant.teach = function(script) {
       eval("_ant.program = " + script);
@@ -90,6 +101,7 @@ onBump: function() {
         _ant[key] = _ant.program[key];
       });
     }
+
 
     _ant.edit = function() {
       $('textarea.script').val(_ant.stringify(_ant.program));
@@ -135,7 +147,8 @@ onBump: function() {
     _ant.teach(_ant.stringify(_ant.program));
 
     _ant.run = function() {
- 
+
+      _ant.age += 1;
       if (_ant.onRun) _ant.onRun();
       if (_ant.onBump && _ant.bump) _ant.onBump();
  
