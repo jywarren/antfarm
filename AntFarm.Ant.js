@@ -68,6 +68,9 @@ onBump: function() {
       ant.el.css({ WebkitTransform: 'rotate(' + -ant.direction + 'deg)'});
       // For Mozilla browser: e.g. Firefox
       ant.el.css({ '-moz-transform': 'rotate(' + -ant.direction + 'deg)'});
+
+      return ant;
+
     }
 
     // runs just after position()
@@ -77,7 +80,7 @@ onBump: function() {
       ant.el.css('height', ant.height+'px');
 
       // update color
-      $('ant-'+this.id+':link').css('border-color', ant.color);
+      $('ant-'+ant.id+':link').css('border-color', ant.color);
     }
 
     ant.teach = function(script) {

@@ -3,6 +3,7 @@ AntFarm.Field = Class.extend({
   objects: [],
   ids: [],
   margin: 30,
+  time: 0,
   playing: true,
 
   // accepts interval in ms
@@ -22,6 +23,7 @@ AntFarm.Field = Class.extend({
     }
 
     this.run = function() {
+      field.time += 1;
       if (field.playing) {
         for (var i in field.objects) {
           field.objects[i].position();
