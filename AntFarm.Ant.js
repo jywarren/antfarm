@@ -6,7 +6,7 @@ AntFarm.Ant = Class.extend({
 onRun: function() {
 
   this.direction += Math.random()*10-5;
-  field.darken(this.x,this.y,'red',100); // x, y, rgb, amount
+  field.darken(this.x, this.y, 'blue', 50); // x, y, rgb, amount
 
 },
  
@@ -31,78 +31,78 @@ onBump: function() {
     this.direction = Math.random()*360;
     this.color = "red";
 
-    var ant = this;
+    var _ant = this;
 
     // runs just after run()
-    ant.position = function() {
-      ant.bump = false;
+    _ant.position = function() {
+      _ant.bump = false;
 
       // limit to bounds
-      if (ant.x > field.width) { 
-        ant.bump = true;
-        ant.x = field.width;
+      if (_ant.x > field.width) { 
+        _ant.bump = true;
+        _ant.x = field.width;
       }
-      if (ant.y > field.height) {
-        ant.bump = true;
-        ant.y = field.height;
+      if (_ant.y > field.height) {
+        _ant.bump = true;
+        _ant.y = field.height;
       }
-      if (ant.x < 0) {
-        ant.bump = true;
-        ant.x = 0;
+      if (_ant.x < 0) {
+        _ant.bump = true;
+        _ant.x = 0;
       }
-      if (ant.y < 0) {
-        ant.bump = true;
-        ant.y = 0;
+      if (_ant.y < 0) {
+        _ant.bump = true;
+        _ant.y = 0;
       }
 
       // move with trigonometry
-      ant.x = ant.x + Math.sin(ant.direction/180*Math.PI)*ant.speed;
-      ant.y = ant.y + Math.cos(ant.direction/180*Math.PI)*ant.speed;
+      _ant.x = _ant.x + Math.sin(_ant.direction/180*Math.PI)*_ant.speed;
+      _ant.y = _ant.y + Math.cos(_ant.direction/180*Math.PI)*_ant.speed;
  
       // set position
-      ant.el.css('left', ant.x-(ant.width/2)+'px');
-      ant.el.css('top',  ant.y-(ant.height/2)+'px');
+      _ant.el.css('left', _ant.x-(_ant.width/2)+'px');
+      _ant.el.css('top',  _ant.y-(_ant.height/2)+'px');
 
       // rotation
       // webkit, e.g. chrome/safari
-      ant.el.css({ WebkitTransform: 'rotate(' + -ant.direction + 'deg)'});
+      _ant.el.css({ WebkitTransform: 'rotate(' + -_ant.direction + 'deg)'});
       // For Mozilla browser: e.g. Firefox
-      ant.el.css({ '-moz-transform': 'rotate(' + -ant.direction + 'deg)'});
+      _ant.el.css({ '-moz-transform': 'rotate(' + -_ant.direction + 'deg)'});
 
-      return ant;
+      return _ant;
 
     }
 
     // runs just after position()
-    ant.appearance = function() {
+    _ant.appearance = function() {
       // set size
-      ant.el.css('width',  ant.width+'px');
-      ant.el.css('height', ant.height+'px');
+      _ant.el.css('width',  _ant.width+'px');
+      _ant.el.css('height', _ant.height+'px');
 
       // update color
-      $('ant-'+ant.id+':link').css('border-color', ant.color);
+      $('.ant-'+_ant.id).css('border-color', _ant.color);
     }
 
-    ant.teach = function(script) {
-      eval("ant.program = " + script);
-      ant.el.attr('script', script);
-      Object.keys(ant.program).forEach(function(key) {
-        ant[key] = ant.program[key];
+    _ant.teach = function(script) {
+      eval("_ant.program = " + script);
+      _ant.el.attr('script', script);
+      Object.keys(_ant.program).forEach(function(key) {
+        _ant[key] = _ant.program[key];
       });
     }
 
-    ant.edit = function() {
-      $('textarea.script').val(ant.stringify(ant.program));
+    _ant.edit = function() {
+      $('textarea.script').val(_ant.stringify(_ant.program));
       $('.modal').modal({show: true});
       $('.modal .save').off("click");
       $('.modal .save').click(function() {
-        ant.teach($('textarea.script').val());
+        _ant.teach($('textarea.script').val());
         $('.modal').modal({show: false});
       });
       // teach ALL THE ANTS
       $('.modal .save-all').click(function() {
-        field.objects.forEach(function(ant) {
-          ant.teach($('textarea.script').val());
+        field.objects.forEach(function(_ant) {
+          _ant.teach($('textarea.script').val());
           $('.modal').modal({show: false});
         });
       });
@@ -110,34 +110,34 @@ onBump: function() {
 
     
 
-    ant.el.on('dblclick', ant.edit);
+    _ant.el.on('dblclick', _ant.edit);
 
     field.el.on("mousemove touchmove", function(e) {
-      if (ant.dragging) {
+      if (_ant.dragging) {
         e.preventDefault();
         if (e.changedTouches) { // if it's a touch event
           e = e.changedTouches[0]; // reference first finger touch
         }
-        ant.x = e.pageX-field.margin;
-        ant.y = e.pageY-field.margin;
-        ant.position();
+        _ant.x = e.pageX-field.margin;
+        _ant.y = e.pageY-field.margin;
+        _ant.position();
       }
     });
 
-    ant.el.on("mousedown touchstart", function (e) {
-      ant.dragging = true;
+    _ant.el.on("mousedown touchstart", function (e) {
+      _ant.dragging = true;
     });
 
-    ant.el.on("mouseup touchend", function (e) {
-      ant.dragging = false;
+    _ant.el.on("mouseup touchend", function (e) {
+      _ant.dragging = false;
     });
 
-    ant.teach(ant.stringify(ant.program));
+    _ant.teach(_ant.stringify(_ant.program));
 
-    ant.run = function() {
+    _ant.run = function() {
  
-      if (ant.onRun) ant.onRun();
-      if (ant.onBump && ant.bump) ant.onBump();
+      if (_ant.onRun) _ant.onRun();
+      if (_ant.onBump && _ant.bump) _ant.onBump();
  
     }
 
