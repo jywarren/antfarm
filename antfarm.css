@@ -1,5 +1,5 @@
 html {
-  background: #222;
+  background: #112;
 }
 
 .field {
@@ -19,12 +19,17 @@ html {
 }
 
 .controls, .title {
-  color: #888;
+  color: #aaf;
   position: absolute;
   bottom: 0;
   height: 60px;
   padding: 15px;
   font-size: 20px;
+}
+
+.controls a:hover,
+.title a:hover {
+  color:#aaf
 }
 
 .controls {
@@ -38,15 +43,14 @@ html {
 .ant {
   width: 10px;
   height: 10px;
-  border: 1px solid red;
+  border: 2px solid red;
   position: absolute;
   z-index:3;
   -webkit-transition: width 1s, height 1s, border-color 2s /*, -webkit-transform 1s; */
   transition:         width 1s, height 1s, border-color 2s /*, transform 1s; */
-}
-
-.ant:hover {
-  border-color: white;
+  -webkit-box-shadow: 0px 0px 50px rgba(50,50,255,0.8);
+  -moz-box-shadow:    0px 0px 50px rgba(50,50,255,0.8);
+  box-shadow:         0px 0px 50px rgba(50,50,255,0.8);
 }
 
 .modal textarea.script {

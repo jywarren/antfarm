@@ -6,7 +6,7 @@ AntFarm.Ant = Class.extend({
 onRun: function() {
 
   this.direction += Math.random()*10-5;
-  field.darken(this.x, this.y, 'blue', 50); // x, y, rgb, amount
+  field.trail(this.x, this.y, 'blue', 50); // x, y, rgb, amount
 
 },
  
@@ -30,7 +30,7 @@ onBump: function() {
     this.height = 10;
     this.speed = 1;
     this.direction = Math.random()*360;
-    this.color = "red";
+    this.color = "white";
 
     var _ant = this;
 
@@ -90,7 +90,7 @@ onBump: function() {
 
       // update color
       $('.ant-'+_ant.id).css('border-color', _ant.color);
-      $('.ant-'+_ant.id+':hover').css('border-color', 'white');
+      $('.ant-'+_ant.id+':hover').css('border-color', '#f33');
     }
 
 
@@ -104,17 +104,23 @@ onBump: function() {
 
 
     _ant.edit = function() {
-      $('textarea.script').val(_ant.stringify(_ant.program));
+      //$('textarea.script').val();
+      field.editor.setValue(_ant.stringify(_ant.program));
+      $('.modal').on('shown.bs.modal', function() {
+        field.editor.refresh();
+      });
       $('.modal').modal({show: true});
       $('.modal .save').off("click");
       $('.modal .save').click(function() {
-        _ant.teach($('textarea.script').val());
+        //_ant.teach($('textarea.script').val());
+        _ant.teach(field.editor.getValue());
         $('.modal').modal({show: false});
       });
       // teach ALL THE ANTS
       $('.modal .save-all').click(function() {
         field.objects.forEach(function(_ant) {
-          _ant.teach($('textarea.script').val());
+          //_ant.teach($('textarea.script').val());
+          _ant.teach(field.editor.getValue());
           $('.modal').modal({show: false});
         });
       });

@@ -15,6 +15,12 @@ AntFarm.Field = Class.extend({
 
     var field = this;
 
+    field.editor = CodeMirror.fromTextArea($('textarea.script')[0], {
+      lineNumbers: true,
+      mode: 'javascript',
+      theme: '3024-night'
+    });
+
     this.getId = function() {
       if (field.ids.length == 0) id = 0;
       else id = field.ids[field.ids.length-1]+1;
@@ -90,23 +96,23 @@ AntFarm.Field = Class.extend({
       return px[3];
     }
 
-    this.darkenRed = function(x, y, val) {
-      this.darken(x, y, "red", val);
+    this.trailRed = function(x, y, val) {
+      this.trail(x, y, "red", val);
     }
 
-    this.darkenGreen = function(x, y, val) {
-      this.darken(x, y, "green", val);
+    this.trailGreen = function(x, y, val) {
+      this.trail(x, y, "green", val);
     }
 
-    this.darkenBlue = function(x, y, val) {
-      this.darken(x, y, "blue", val);
+    this.trailBlue = function(x, y, val) {
+      this.trail(x, y, "blue", val);
     }
 
-    this.darkenAlpha = function(x, y, val) {
-      this.darken(x, y, "alpha", val);
+    this.trailAlpha = function(x, y, val) {
+      this.trail(x, y, "alpha", val);
     }
  
-    this.darken = function(x,y,channel,val) {
+    this.trail = function(x,y,channel,val) {
       var pixelData = field.canvas.getImageData(x, y, 1, 1),
           colors = ["red", "green", "blue", "alpha"];
       pixelData.data[colors.indexOf(channel)] += val;
