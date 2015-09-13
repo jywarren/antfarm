@@ -60,6 +60,13 @@ AntFarm.Ant = Class.extend({
     }
 
 
+    // grows ant by pixels dimension
+    _ant.grow = function(pixels) {
+      _ant.height += pixels;
+      _ant.width += pixels;
+    }
+
+
     // cleans up the ant
     _ant.remove = function() {
       field.objects.splice(field.objects.indexOf(_ant), 1);
@@ -145,21 +152,6 @@ AntFarm.Ant = Class.extend({
       if (_ant.onBump && _ant.bump) _ant.onBump();
  
     }
-
-  },
-
-  stringify: function(obj) {
-
-    var keys = Object.keys(obj),
-        string = "{\n\n";
-
-    keys.forEach(function(key) {
-      string += key + ": " + obj[key] + ",\n\n";
-    });
-
-    string += "}";
-
-    return string;
 
   }
 
