@@ -1,22 +1,7 @@
 AntFarm.Ant = Class.extend({
 
 // tweak indents to look right in editor:
-  program: { 
-
-onRun: function() {
-
-  this.direction += Math.random()*10-5;
-  field.trail(this.x, this.y, 'blue', 50); // x, y, rgb, amount
-
-},
- 
-onBump: function() {
-
-  this.direction += 90;
-
-}
- 
-  },
+  program: "onRun = function() {\n\n  this.direction += Math.random()*10-5;\n  field.trail(this.x, this.y, 'blue', 50); // x, y, rgb, amount\n\n}\n\nonBump = function() {\n\n  this.direction += 90;\n\n}\n",
 
   init: function(field) {
 
@@ -95,17 +80,18 @@ onBump: function() {
 
 
     _ant.teach = function(script) {
-      eval("_ant.program = " + script);
-      _ant.el.attr('script', script);
-      Object.keys(_ant.program).forEach(function(key) {
-        _ant[key] = _ant.program[key];
-      });
+      var onRun  = false, 
+          onBump = false;
+      eval(script);
+      _ant.program = script;
+      if (onRun)  _ant.onRun  = onRun;
+      if (onBump) _ant.onBump = onBump;
     }
 
 
     _ant.edit = function() {
       //$('textarea.script').val();
-      field.editor.setValue(_ant.stringify(_ant.program));
+      field.editor.setValue(_ant.program);
       $('.modal').on('shown.bs.modal', function() {
         field.editor.refresh();
       });
@@ -150,7 +136,7 @@ onBump: function() {
       _ant.dragging = false;
     });
 
-    _ant.teach(_ant.stringify(_ant.program));
+    _ant.teach(_ant.program);
 
     _ant.run = function() {
 
