@@ -48,9 +48,12 @@ AntFarm.Field = Class.extend({
     this.interval = setInterval(this.run,interval);
 
     this.populate = function(type,num) {
+      var newObjects = [];
       for (var i = 0; i < num; i++) {
         field.objects.push(new type(field));
+        newObjects.push(field.objects[field.objects.length - 1]);
       }
+      return newObjects;
     }
 
     // [r,g,b,a] where each can be 0-255
