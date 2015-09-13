@@ -103,6 +103,8 @@ AntFarm.Ant = Class.extend({
         field.editor.refresh();
       });
       $('.modal').modal({show: true});
+      $('.modal .btn-gist').off("click");
+      $('.modal .btn-gist').click(function() { _ant.save() });
       $('.modal .save').off("click");
       $('.modal .save').click(function() {
         //_ant.teach($('textarea.script').val());
@@ -119,6 +121,30 @@ AntFarm.Ant = Class.extend({
       });
     }
 
+
+    _ant.save = function() {
+      var data = {
+        "description": "An ant script saved from https://github.com/jywarren/antfarm",
+        "public": true,
+        "files": {
+          "ant.js": {
+            "content": _ant.program
+          }
+        }
+      }
+      $.ajax({
+        url: 'https://api.github.com/gists',
+        type: 'POST',
+        dataType: 'json',
+        data: JSON.stringify(data)
+      })
+      .success( function(e) {
+        window.open(e.html_url);
+      })
+      .error( function(e) {
+        console.warn("gist save error", e);
+      });
+    }
     
 
     _ant.el.on('dblclick', _ant.edit);
