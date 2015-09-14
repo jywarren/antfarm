@@ -47,6 +47,13 @@ AntFarm.Field = Class.extend({
 
     this.interval = setInterval(this.run,interval);
 
+    // add just one <type> to field.objects
+    this.add = function(type) {
+      field.objects.push(new type(field));
+      return field.objects[field.objects.length - 1];
+    }
+
+    // add a bunch of <type> to field.objects
     this.populate = function(type,num) {
       var newObjects = [];
       for (var i = 0; i < num; i++) {
