@@ -3,7 +3,7 @@ AntFarm.Ant = Class.extend({
   intervals: [],
 
 // tweak indents to look right in editor:
-  program: "onRun = function() {\n\n  this.direction += Math.random()*10-5;\n  field.trail(this.x, this.y, 'blue', 50); // x, y, rgb, amount\n\n}\n\nonBump = function() {\n\n  this.direction += 90;\n\n}\n",
+  program: "onRun = function() {\n\n  this.direction += Math.random()*10-5;\n  field.trail(this.x, this.y, 'blue', 255); // x, y, rgb, amount\n\n}\n\nonBump = function() {\n\n  this.direction += 90;\n\n}\n",
 
   init: function(field) {
 
@@ -15,7 +15,7 @@ AntFarm.Ant = Class.extend({
     this.age = 0;
     this.width = 10;
     this.height = 10;
-    this.speed = 1;
+    this.speed = 2;
     this.direction = Math.random()*360;
     this.color = "white";
 
@@ -43,9 +43,9 @@ AntFarm.Ant = Class.extend({
         _ant.y = 0;
       }
 
-      // move with trigonometry
-      _ant.x = _ant.x + Math.sin(_ant.direction/180*Math.PI)*_ant.speed;
-      _ant.y = _ant.y + Math.cos(_ant.direction/180*Math.PI)*_ant.speed;
+      // move with trigonometry; set up to zero
+      _ant.x += Math.sin((_ant.direction+180)/180*Math.PI) * _ant.speed;
+      _ant.y += Math.cos((_ant.direction+180)/180*Math.PI) * _ant.speed;
  
       // set position
       _ant.el.css('left', _ant.x-(_ant.width/2)+'px');
@@ -77,10 +77,44 @@ AntFarm.Ant = Class.extend({
       return interval;
     }
 
+    // look <distance> pixels in each direction 
+    // (forming a square) for "red", "green" or "blue"
+    // and returns "N", "E", "S", "W"
+    var lookFor = function(color, distance) {
 
-    lookFor = function(color, distance) {
+      var x1 = ~~_ant.x - distance,
+          y1 = ~~_ant.y - distance,
+          x2 = ~~_ant.x + distance,
+          y2 = ~~_ant.y + distance,
+          d = {
+            N: 0,
+            E: 0,
+            S: 0,
+            W: 0
+          };
 
-      
+      for (var _x = x1; _x <= x2; _x++) {
+        for (var _y = y1; _y <= y2; _y++) {
+
+          if        (_x >= Math.abs(_y)) { // E
+            d.E += field[color](_x, _y);
+          } else if (_x <= -Math.abs(_y)) { // W
+            d.W += field[color](_x, _y);
+          } else if (_y >= Math.abs(_x)) { // N
+            d.N += field[color](_x, _y);
+          } else if (_y <= -Math.abs(_x)) { // S
+            d.S += field[color](_x, _y);
+          } 
+
+        }
+      }
+console.log(JSON.stringify(d))
+      // ugh
+      if      (d.N > d.E && d.N > d.S && d.N > d.W) return "N";
+      else if (d.E > d.N && d.E > d.S && d.E > d.W) return "E";
+      else if (d.S > d.N && d.S > d.E && d.S > d.W) return "S";
+      else if (d.W > d.N && d.W > d.E && d.W > d.S) return "W";
+      else if (d.N + d.E + d.S + d.W == 0) return false;
 
     }
 
@@ -144,7 +178,7 @@ AntFarm.Ant = Class.extend({
         "public": true,
         "files": {
           "ant.js": {
-            "content": _ant.program
+            "content": field.editor.getValue()
           }
         }
       }

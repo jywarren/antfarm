@@ -30,6 +30,9 @@ AntFarm.Field = Class.extend({
 
     this.run = function() {
       field.time += 1;
+      // dim existing tracks:
+      field.canvas.fillStyle = "rgba(0,0,0,0.01)";
+      field.canvas.fillRect(0,0,field.width,field.height);
       if (field.playing) {
         for (var i in field.objects) {
           field.objects[i].position();
