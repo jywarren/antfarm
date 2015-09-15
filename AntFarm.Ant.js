@@ -1,5 +1,7 @@
 AntFarm.Ant = Class.extend({
 
+  intervals: [],
+
 // tweak indents to look right in editor:
   program: "onRun = function() {\n\n  this.direction += Math.random()*10-5;\n  field.trail(this.x, this.y, 'blue', 50); // x, y, rgb, amount\n\n}\n\nonBump = function() {\n\n  this.direction += 90;\n\n}\n",
 
@@ -67,6 +69,22 @@ AntFarm.Ant = Class.extend({
     }
 
 
+    // runs <callback> every <seconds>
+    var every = function(seconds, callback) {
+      // this isn't right -- it should run only when the clock is running. 
+      var interval = setInterval(callback, seconds * 1000);
+      _ant.intervals.push(interval);
+      return interval;
+    }
+
+
+    lookFor = function(color, distance) {
+
+      
+
+    }
+
+
     // cleans up the ant
     _ant.remove = function() {
       field.objects.splice(field.objects.indexOf(_ant), 1);
@@ -107,15 +125,13 @@ AntFarm.Ant = Class.extend({
       $('.modal .btn-gist').click(function() { _ant.save() });
       $('.modal .save').off("click");
       $('.modal .save').click(function() {
-        //_ant.teach($('textarea.script').val());
         _ant.teach(field.editor.getValue());
         $('.modal').modal({show: false});
       });
-      // teach ALL THE ANTS
+      // teach ALL THE ANTS of the same color
       $('.modal .save-all').click(function() {
-        field.objects.forEach(function(_ant) {
-          //_ant.teach($('textarea.script').val());
-          _ant.teach(field.editor.getValue());
+        field.objects.forEach(function(__ant) {
+          if (_ant.color == __ant.color) __ant.teach(field.editor.getValue());
           $('.modal').modal({show: false});
         });
       });
