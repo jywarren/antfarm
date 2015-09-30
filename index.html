@@ -45,6 +45,7 @@
 
       <p class="controls">
         <a class="btn btn-lg on-off" onClick="field.togglePlay();"><i class="fa fa-pause"></i></a>
+        <a class="btn btn-lg playbook" onClick="$('.playbook-modal');"><i class="fa fa-book"></i></a>
       </p>
 
       <p class="title">
@@ -54,7 +55,30 @@
  
     </div>
 
-    <div class="modal fade">
+    <div class="modal modal-playbook fade">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <b>Scripts</b>
+          </div>
+   
+          <div class="modal-body" style="max-height:600px;">
+
+            <table class="table">
+
+              <!-- is this dumb? just link to wiki? -->
+
+            </table>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="modal modal-code fade">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
 

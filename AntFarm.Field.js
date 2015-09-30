@@ -158,6 +158,15 @@ AntFarm.Field = Class.extend({
     this.canvas.fillStyle = "rgba(0,0,0,1)";
     this.canvas.fillRect(0,0,this.width,this.height);
 
+    $('.field').on('dblclick', function(e) {
+
+      var leafSize = 20;
+      field.canvas.fillStyle = "rgba(0,255,0,1)";
+      console.log(e.offsetX, e.offsetY, e.offsetX - leafSize/2, e.offsetY - leafSize/2, leafSize, leafSize);
+      field.canvas.fillRect(e.offsetX - leafSize/2, e.offsetY - leafSize/2, leafSize, leafSize);
+
+    });
+
   }
 
 });
