@@ -41,6 +41,7 @@ html {
 }
 
 .ant {
+  color: white;
   width: 10px;
   height: 10px;
   border: 2px solid red;
@@ -51,6 +52,13 @@ html {
   -webkit-box-shadow: 0px 0px 50px rgba(50,50,255,0.8);
   -moz-box-shadow:    0px 0px 50px rgba(50,50,255,0.8);
   box-shadow:         0px 0px 50px rgba(50,50,255,0.8);
+}
+
+.ant .fa {
+  margin-left: 1px;
+  margin-top: 1px;
+  font-size: 6px;
+  float: left;
 }
 
 .modal textarea.script {

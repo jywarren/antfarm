@@ -78,7 +78,7 @@ AntFarm.Field = Class.extend({
       var colors = ["red", "green", "blue", "alpha"],
           px = field.get(x, y);
 
-      if (val) {
+      if (typeof val !== "undefined") {
         px[colors.indexOf(color)] = val;
         field.set(x, y, px);
       }
@@ -87,25 +87,25 @@ AntFarm.Field = Class.extend({
 
     this.red = function(x, y, val) {
       var px = field.get(x, y);
-      if (val) field.color(x, y, 0, val);
+      if (typeof val !== "undefined") field.color(x, y, "red", val);
       return px[0];
     }
 
     this.green = function(x, y, val) {
       var px = field.get(x, y);
-      if (val) field.color(x, y, 1, val);
+      if (typeof val !== "undefined") field.color(x, y, "green", val);
       return px[1];
     }
 
     this.blue = function(x, y, val) {
       var px = field.get(x, y);
-      if (val) field.color(x, y, 2, val);
+      if (typeof val !== "undefined") field.color(x, y, "blue", val);
       return px[2];
     }
 
     this.alpha = function(x, y, val) {
       var px = field.get(x, y);
-      if (val) field.color(x, y, 3, val);
+      if (typeof val !== "undefined") field.color(x, y, "alpha", val);
       return px[3];
     }
 
@@ -162,7 +162,7 @@ AntFarm.Field = Class.extend({
 
       var leafSize = 20;
       field.canvas.fillStyle = "rgba(0,255,0,1)";
-      console.log(e.offsetX, e.offsetY, e.offsetX - leafSize/2, e.offsetY - leafSize/2, leafSize, leafSize);
+      //console.log(e.offsetX, e.offsetY, e.offsetX - leafSize/2, e.offsetY - leafSize/2, leafSize, leafSize);
       field.canvas.fillRect(e.offsetX - leafSize/2, e.offsetY - leafSize/2, leafSize, leafSize);
 
     });

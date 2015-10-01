@@ -8,14 +8,14 @@ AntFarm.Ant = Class.extend({
   init: function(field) {
 
     this.id = field.getId();
-    $('.field').append('<div class="ant ant-'+this.id+'"></div>');
+    $('.field').append('<div class="ant ant-'+this.id+'"><i class="fa fa-chevron-up"></i></div>');
     this.el = $('.ant-'+id);
     this.x = parseInt(Math.random()*field.width);
     this.y = parseInt(Math.random()*field.height);
     this.age = 0;
     this.energy = 100;
-    this.width = 10;
-    this.height = 10;
+    this.width = 12;
+    this.height = 12;
     this.speed = 2;
     this.direction = Math.random()*360;
     this.color = "white";
@@ -45,8 +45,8 @@ AntFarm.Ant = Class.extend({
       }
 
       // move with trigonometry; set up to zero
-      ant.x += Math.sin((-ant.direction) / 180 * Math.PI) * ant.speed;
-      ant.y += Math.cos((-ant.direction) / 180 * Math.PI) * ant.speed;
+      ant.x += Math.sin((-ant.direction + 180) / 180 * Math.PI) * ant.speed;
+      ant.y += Math.cos((-ant.direction + 180) / 180 * Math.PI) * ant.speed;
  
       // set position
       ant.el.css('left', ant.x-(ant.width/2)+'px');
@@ -54,9 +54,13 @@ AntFarm.Ant = Class.extend({
 
       // rotation
       // webkit, e.g. chrome/safari
-      ant.el.css({ WebkitTransform: 'rotate(' + -ant.direction + 'deg)'});
+      ant.el.css({ WebkitTransform: 'rotate(' + parseInt(ant.direction) + 'deg)'});
+
       // For Mozilla browser: e.g. Firefox
-      ant.el.css({ '-moz-transform': 'rotate(' + -ant.direction + 'deg)'});
+      ant.el.css({ '-moz-transform': 'rotate(' + parseInt(ant.direction) + 'deg)'});
+
+      if (ant.direction > 360) ant.direction -= 360;
+      if (ant.direction < 0) ant.direction += 360;
 
       return ant;
 
@@ -65,8 +69,34 @@ AntFarm.Ant = Class.extend({
 
     // grows ant by pixels dimension
     ant.grow = function(pixels) {
+
       ant.height += pixels;
       ant.width += pixels;
+
+    }
+
+
+    ant.distance = function() {
+
+      // Overload!
+      if (arguments[0] instanceof Array) {
+
+        var x = arguments[0][0],
+            y = arguments[0][1];
+
+      } else if (arguments[0] instanceof Object) {
+
+        var x = arguments[0].x,
+            y = arguments[0].y;
+
+      } else {
+
+        var x = arguments[0],
+            y = arguments[1];
+      }
+
+      return Math.sqrt(Math.pow(ant.x - x, 2) + Math.pow(ant.y - y, 2));
+
     }
 
 
@@ -120,17 +150,29 @@ AntFarm.Ant = Class.extend({
     // point the ant at an object which has x, y properties
     ant.point = function(target) {
 
-      // polymorph (?) 
-      //if (target Array)
+      // Overload!
+      if (arguments[0] instanceof Array) {
 
-      var x = target.x,
-          y = target.y;
+        var x = arguments[0][0],
+            y = arguments[0][1];
+
+      } else if (arguments[0] instanceof Object) {
+
+        var x = arguments[0].x,
+            y = arguments[0].y;
+
+      } else {
+
+        var x = arguments[0],
+            y = arguments[1];
+      }
 
       // trig
-
-      // need + 180?
       ant.direction = Math.atan((x - ant.x) / (y - ant.y)) / Math.PI * -180;
-console.log(ant.direction)
+
+      // because I am bad at math, i don't know why this is necessary:
+      if (ant.y < y) ant.direction += 180;
+
     }
 
 
@@ -210,7 +252,7 @@ console.log(_x, _y)
     ant.edit = function() {
 
       // if onRun's been overwritten, it's not represented in the .program string:
-      ant.program = ""+ant.onRun
+      //ant.program = ""+ant.onRun
 
       field.editor.setValue(ant.program);
       $('.modal-code').on('shown.bs.modal-code', function() {
