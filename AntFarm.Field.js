@@ -142,6 +142,11 @@ AntFarm.Field = Class.extend({
       field.canvas.putImageData(pixelData, x, y);
     }
 
+    this.leaf = function(x, y, leafSize) {
+      field.canvas.fillStyle = "rgba(0,255,0,1)";
+      field.canvas.fillRect(x - leafSize/2, y - leafSize/2, leafSize, leafSize);
+    }
+
   },
 
   setup: function() {
@@ -160,10 +165,7 @@ AntFarm.Field = Class.extend({
 
     $('.field').on('dblclick', function(e) {
 
-      var leafSize = 20;
-      field.canvas.fillStyle = "rgba(0,255,0,1)";
-      //console.log(e.offsetX, e.offsetY, e.offsetX - leafSize/2, e.offsetY - leafSize/2, leafSize, leafSize);
-      field.canvas.fillRect(e.offsetX - leafSize/2, e.offsetY - leafSize/2, leafSize, leafSize);
+      field.leaf(e.offsetX, e.offsetY, 20);
 
     });
 

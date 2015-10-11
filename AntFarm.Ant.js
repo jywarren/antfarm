@@ -168,7 +168,7 @@ AntFarm.Ant = Class.extend({
       }
 
       // trig
-      ant.direction = Math.atan((x - ant.x) / (y - ant.y)) / Math.PI * -180;
+      ant.direction = parseInt(Math.atan((x - ant.x) / (y - ant.y + 0.01)) / Math.PI * -180); // quick fix for division by zero; add 0.01
 
       // because I am bad at math, i don't know why this is necessary:
       if (ant.y < y) ant.direction += 180;
@@ -328,7 +328,7 @@ console.log(_x, _y)
     ant.run = function() {
 
       ant.age += 1;
-      ant.energy += 1;
+      ant.energy -= 1;
       if (ant.onRun) ant.onRun();
       if (ant.onBump && ant.bump) ant.onBump();
  
