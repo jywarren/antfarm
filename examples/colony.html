@@ -107,7 +107,7 @@ onRun = function () {
   ant.trail('blue', 100); // leave a trail of <color>, <amount>
   ant.color = "rgba(" + ant.energy + ", 0, 50, 1)"; // color red according to how full
 
-  if (ant.energy > 1000) {
+  if (ant.energy > 1000 && field.objects.length < 100) {  // no more than 100 ants on the field!
     // make a new ant
     var child = field.populate(AntFarm.Ant, 1)[0];
 
