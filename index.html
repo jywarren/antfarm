@@ -30,6 +30,16 @@
 
         field.populate(AntFarm.Ant,5);
 
+        // leave some new random leaves
+        for (var i = 0; i < 10; i++) {
+          field.leaf(Math.random() * field.width, Math.random() * field.height, 20);
+        }
+
+        // leave a new random leaf every 30 seconds:
+        setInterval(function() {
+          field.leaf(Math.random() * field.width, Math.random() * field.height, 20);
+        }, 30000);
+
       });
     </script>
 
