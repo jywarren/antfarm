@@ -2,8 +2,15 @@ AntFarm.Ant = Class.extend({
 
   intervals: [],
 
-// tweak indents to look right in editor:
-  program: "onRun = function() {\n\n  ant.direction += Math.random()*10-5;\n  ant.trail('blue', 255); // color, amount\n\n}\n\nonBump = function() {\n\n  ant.direction += 90;\n\n}\n",
+  program: {
+    onRun: function() {
+      ant.direction += Math.random()*10-5;
+      ant.trail('blue', 255); // color, amount
+    },
+    onBump: function() {
+      ant.direction += 90;
+    }
+  },
 
   init: function(field) {
 
@@ -239,22 +246,47 @@ console.log(_x, _y)
     }
 
 
+    // accepts a string to save in programString, 
+    // and overwrite both live ant.foo and saved ant.program.foo 
+    // (for pasting into editor)
     ant.teach = function(script) {
       var onRun  = false, 
-          onBump = false;
+          onBump = false,
+          child = ant; // <= for common pattern where you program a child ant. Not so clean. 
       eval(script);
-      ant.program = script;
-      if (onRun)  ant.onRun  = onRun;
-      if (onBump) ant.onBump = onBump;
+      if (onRun) {
+        ant.onRun  = onRun;
+        ant.program.onRun = onRun;
+      }
+      if (onBump) {
+        ant.onBump = onBump;
+        ant.program.onBump = onBump;
+      }
+    }
+
+
+    // run after overwriting an ant's onRun or onBump,
+    // so the ant displays those properly in the editor.
+    // not so clean...
+    ant.remember = function() {
+      ant.program.onRun = ant.onRun;
+      ant.program.onBump = ant.onBump;
+    }
+
+
+    // imperfect -- child ants can't be reprogrammed because they have ref to "child" object
+    ant.programToString = function() {
+      var string = '';
+      Object.keys(ant.program).forEach(function(key, index) {
+        string += key + ' = ';
+        string += ant.program[key] + "\n\n";
+      });
+      return string;
     }
 
 
     ant.edit = function() {
-
-      // if onRun's been overwritten, it's not represented in the .program string:
-      //ant.program = ""+ant.onRun
-
-      field.editor.setValue(ant.program);
+      field.editor.setValue(ant.programToString());
       $('.modal-code').on('shown.bs.modal-code', function() {
         field.editor.refresh();
       });
@@ -262,10 +294,13 @@ console.log(_x, _y)
       $('.modal-code .btn-gist').off("click");
       $('.modal-code .btn-gist').click(function() { ant.save() });
       $('.modal-code .save').off("click");
+
+      // teach this ant
       $('.modal-code .save').click(function() {
         ant.teach(field.editor.getValue());
         $('.modal-code').modal({show: false});
       });
+
       // teach ALL THE ANTS of the same color
       $('.modal-code .save-all').click(function() {
         field.objects.forEach(function(_ant) {
@@ -323,7 +358,8 @@ console.log(_x, _y)
       ant.dragging = false;
     });
 
-    ant.teach(ant.program);
+    // teach should accept non-strings and switch
+    ant.teach(ant.programToString());
 
     ant.run = function() {
 
