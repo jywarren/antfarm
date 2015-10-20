@@ -31,8 +31,8 @@ AntFarm.Field = Class.extend({
     this.run = function() {
       field.time += 1;
       // dim existing tracks:
-      field.canvas.fillStyle = "rgba(0,0,0,0.01)";
-      field.canvas.fillRect(0,0,field.width,field.height);
+      //field.canvas.fillStyle = "rgba(0,0,0,0.01)";
+      //field.canvas.fillRect(0,0,field.width,field.height);
       if (field.playing) {
         for (var i in field.objects) {
           field.objects[i].position();
@@ -166,6 +166,24 @@ AntFarm.Field = Class.extend({
     $('.field').on('dblclick', function(e) {
 
       field.leaf(e.offsetX, e.offsetY, 20);
+
+    });
+
+    $('.field').on('mousedown', function(e) {
+      field.drawing = true;
+    });
+
+    $('.field').on('mouseup', function(e) {
+      field.drawing = false;
+    });
+
+    $('.field').on('mousemove', function(e) {
+
+      if (field.drawing) {
+        var penSize = 20;
+        field.canvas.fillStyle = "red";
+        field.canvas.fillRect(e.offsetX - penSize/2, e.offsetY - penSize/2, penSize, penSize);
+      }
 
     });
 

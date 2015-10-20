@@ -8,7 +8,7 @@ AntFarm.Ant = Class.extend({
       ant.trail('blue', 255); // color, amount
     },
     onBump: function() {
-      ant.direction += 90;
+      ant.direction += 83;
     }
   },
 
@@ -51,10 +51,15 @@ AntFarm.Ant = Class.extend({
         ant.y = 0;
       }
 
+      if (ant.red()) ant.bump = true;
+
+      if (ant.bump) var reverse = -5;
+      else reverse = 0;
+
       // move with trigonometry; set up to zero
-      ant.x += Math.sin((-ant.direction + 180) / 180 * Math.PI) * ant.speed;
-      ant.y += Math.cos((-ant.direction + 180) / 180 * Math.PI) * ant.speed;
- 
+      ant.x += Math.sin((-ant.direction + 180) / 180 * Math.PI) * (ant.speed + reverse);
+      ant.y += Math.cos((-ant.direction + 180) / 180 * Math.PI) * (ant.speed + reverse);
+       
       // set position
       ant.el.css('left', ant.x-(ant.width/2)+'px');
       ant.el.css('top',  ant.y-(ant.height/2)+'px');
