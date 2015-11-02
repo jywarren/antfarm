@@ -297,6 +297,7 @@ console.log(_x, _y)
       $('.modal-code').on('shown.bs.modal', function() {
         field.editor.refresh();
       });
+      $('.CodeMirror').height($(window).height() - 300);
       $('.modal-code').modal({show: true});
       $('.modal-code .btn-gist').off("click");
       $('.modal-code .btn-gist').click(function() { ant.save() });
