@@ -69,6 +69,9 @@ AntFarm.Field = Class.extend({
     // [r,g,b,a] where each can be 0-255
     // needs color revision
     this.get = function(x,y) {
+      // this is a common spot where the system crashes, so intifying:
+      x = parseInt(x);
+      y = parseInt(y);
       var p = field.canvas.getImageData(x, y, 1, 1).data; 
       //var hex = "#" + ("000000" + rgbToHex(p[0], p[1], p[2])).slice(-6);
       return p;

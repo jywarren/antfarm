@@ -51,10 +51,12 @@ AntFarm.Ant = Class.extend({
         ant.y = 0;
       }
 
-      if (ant.red()) ant.bump = true;
+      // this is a mess
+      //if (ant.red()) ant.bump = true;
 
-      if (ant.bump) var reverse = -5;
-      else reverse = 0;
+      // if (ant.bump) var reverse = -5;
+      //else var reverse = 0;
+      var reverse = 0;
 
       // move with trigonometry; set up to zero
       ant.x += Math.sin((-ant.direction + 180) / 180 * Math.PI) * (ant.speed + reverse);
@@ -292,7 +294,7 @@ console.log(_x, _y)
 
     ant.edit = function() {
       field.editor.setValue(ant.programToString());
-      $('.modal-code').on('shown.bs.modal-code', function() {
+      $('.modal-code').on('shown.bs.modal', function() {
         field.editor.refresh();
       });
       $('.modal-code').modal({show: true});

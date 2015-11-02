@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    <title>Ant Farm</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="../bower_components/bootstrap-css/css/bootstrap.css">
+    <link rel="stylesheet" href="../bower_components/fontawesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../bower_components/codemirror/lib/codemirror.css">
+    <link rel="stylesheet" href="../bower_components/codemirror/theme/3024-night.css">
+    <link rel="stylesheet" href="../antfarm.css">
+
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../bower_components/bootstrap-css/js/bootstrap.min.js"></script>
+    <script src="../Base.js"></script>
+    <script src="../Class.js"></script>
+    <script src="../AntFarm.Field.js"></script>
+    <script src="../AntFarm.Ant.js"></script>
+    <script src="../bower_components/codemirror/lib/codemirror.js"></script>
+    <script src="../bower_components/codemirror/mode/javascript/javascript.js"></script>
+
+    <script>
+      var field;
+
+      jQuery(document).ready(function($) {
+
+        field = new AntFarm.Field(50);
+
+        field.populate(AntFarm.Ant,5);
+
+        field.objects[0].teach($('#script').html());
+
+        // leave some new random leaves
+        for (var i = 0; i < 10; i++) {
+          field.leaf(Math.random() * field.width, Math.random() * field.height, 20);
+        }
+
+        // leave a new random leaf every 30 seconds:
+        setInterval(function() {
+          field.leaf(Math.random() * field.width, Math.random() * field.height, 20);
+        }, 30000);
+
+      });
+    </script>
+
+  </head>
+
+  <body>
+
+    <div class="container-fluid">
+
+      <div class="field">
+        
+      </div>
+
+      <p class="controls">
+        <a class="btn btn-lg on-off" onClick="field.togglePlay();"><i class="fa fa-pause"></i></a>
+        <a class="btn btn-lg" href="https://github.com/jywarren/antfarm/wiki#Examples"><i class="fa fa-book"></i></a>
+      </p>
+
+      <p class="title">
+        <a class="btn btn-lg" href="https://github.com/jywarren/antfarm"><i class="fa fa-github"></i></a>
+        <b>Antfarm</b>
+      </p>
+ 
+    </div>
+
+    <div class="modal modal-code fade">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <b>Editing Ant</b>
+          </div>
+   
+         <div class="modal-body" style="max-height:600px;">
+            <textarea class="script"></textarea>
+          </div>
+      
+          <div class="modal-footer">
+            <a class="btn" target="_blank" href="https://github.com/jywarren/antfarm/wiki">Docs</a>
+            <a class="btn btn-gist" target="_blank">Save as Gist</a>
+            <a data-dismiss="modal" href="#" class="btn">Close</a>
+            <a data-dismiss="modal" href="#" class="btn btn-primary save-all">Save for all same color ants</a>
+            <a data-dismiss="modal" href="#" class="btn btn-primary save">Save</a>
+          </div>
+    
+        </div>
+      </div>
+    </div>
+
+    <script id="script" type="javascript/ant">// set basic attributes here;
+ant.speed = 1;
+ant.trailColor = 'blue';
+ant.height = 40;
+ant.width = 40;
+ant.energy =  5000;
+
+// runs every frame:
+onRun = function () {
+
+  if (ant.red()) ant.direction += 83; // hit a wall
+  else ant.direction += Math.random()*10-5; // vary direction slightly, randomly, in degrees
+
+  ant.trail(ant.trailColor, 100); // leave a trail of <color>, <amount>
+  ant.color = "rgba(" + ant.energy + ", 0, 50, 1)"; // color red according to how full
+
+  // if queen has enough energy, and there are <100 ants on the field
+  if (ant.energy > 1000 && field.objects.length < 100) {
+
+    // make a new ant:
+    var child = field.populate(AntFarm.Ant, 1)[0];
+
+    // give child 1000 energy:
+    child.energy = 1000;
+    ant.energy -= 1000;
+    child.x = ant.x;
+    child.y = ant.y;
+    child.speed = 3;
+    child.queen = ant;
+    
+    child.onRun = function() {
+
+      // uncomment this line for debugging energy; each ant will have a label
+      // child.el.html('  '+parseInt(child.energy)); // display energy
+
+      child.el.html('  ' + child.turnCount); // display turncount
+
+      if (child.color == 'pink') { // hit a wall
+
+        child.direction -= 5;
+        child.turnCount += 1;
+        if (child.turnCount > 30) child.color = child.oldColor;
+
+        if (child.red()) { // hit a wall
+
+          child.color = 'pink';
+          child.direction += 60;
+          child.turnCount = 0;
+
+        }
+
+      } else if (child.red()) { // hit a wall
+
+        child.oldColor = child.color; // remember what you were doing before
+        child.color = 'pink';
+        child.direction += 60;
+        child.turnCount = 0;
+
+      } else {
+
+      // if on top of some food and mood is not purple:
+      if (child.color != 'purple' && child.green() > 0) { // eat
+      
+        child.color = 'yellow';
+        child.energy += child.green();
+        child.green(0); // remove the green from that patch
+        child.foodPlace = [child.x, child.y]; // remember that spot
+        child.foodTime = field.time;
+        if (child.energy > 1000) child.color = 'purple'; // return to queen if full
+        
+      } else if (child.color == 'purple') { // return to queen
+        
+        if (child.distance(child.queen) < 20) { // if already near queen
+          
+          child.color = 'yellow';
+          child.speed = 0;
+          child.queen.energy += child.energy/2;
+          child.energy /= 2;
+
+        } else {  // point at queen, fast!
+
+          child.speed = 4;
+          child.point(child.queen);
+
+        }
+        
+      } else if (child.foodPlace && (field.time - child.foodTime) < 300) { // if food memory is fresh, return to foodPlace
+
+        child.color = 'orange';
+        child.speed = 4;
+        // point at food place, but
+        // don't keep pointing when close to food or you get stuck:
+        if (child.distance(child.foodPlace) > 5) child.point(child.foodPlace);
+        else child.direction += Math.random()*90-45; // or just wander
+
+      } else { // forage
+
+        child.color = "rgba(" + child.energy + ", 0, 50, 1)"; // color red according to how full
+        child.speed = 2;
+        child.direction += Math.random()*10-5; // random walk
+
+      }
+      }
+
+      // if child runs out of energy
+      if (child.energy <= 0) {
+
+        child.color = 'grey';
+        child.die();
+
+      }
+
+      // leave a trail
+      child.trail(ant.trailColor, 255); // color, amount 0-255
+
+    }
+    
+    child.remember(); // make child ant remember their instructions! 
+  }
+}
+
+onBump = function () {
+
+  // change direction by 90 degrees:
+  ant.direction += 90;
+
+}</script>
+
+  </body>
+
+</html>
