@@ -81,6 +81,15 @@ AntFarm.Ant = Class.extend({
     }
 
 
+    // fetches neighbors in the proximity grid (field.grid), if any
+    ant.neighbors = function() {
+
+      if (ant.gridKey) return field.grid[ant.gridKey].map(function(neighbor) { if (neighbor.id != ant.id) return neighbor; }); // don't return self
+      else return [];
+
+    }
+
+
     // grows ant by pixels dimension
     ant.grow = function(pixels) {
 
@@ -259,6 +268,7 @@ console.log(_x, _y)
     ant.teach = function(script) {
       var onRun  = false, 
           onBump = false,
+          onTouch = false,
           child = ant; // <= for common pattern where you program a child ant. Not so clean. 
       eval(script);
       if (onRun) {
@@ -269,6 +279,10 @@ console.log(_x, _y)
         ant.onBump = onBump;
         ant.program.onBump = onBump;
       }
+      if (onTouch) {
+        ant.onTouch  = onTouch;
+        ant.program.onTouch = onTouch;
+      }
     }
 
 
@@ -278,6 +292,7 @@ console.log(_x, _y)
     ant.remember = function() {
       ant.program.onRun = ant.onRun;
       ant.program.onBump = ant.onBump;
+      ant.program.onTouch = ant.onTouch;
     }
 
 

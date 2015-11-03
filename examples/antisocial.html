@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    <title>Ant Farm</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="../bower_components/bootstrap-css/css/bootstrap.css">
+    <link rel="stylesheet" href="../bower_components/fontawesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../bower_components/codemirror/lib/codemirror.css">
+    <link rel="stylesheet" href="../bower_components/codemirror/theme/3024-night.css">
+    <link rel="stylesheet" href="../antfarm.css">
+
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../bower_components/bootstrap-css/js/bootstrap.min.js"></script>
+    <script src="../Base.js"></script>
+    <script src="../Class.js"></script>
+    <script src="../AntFarm.Field.js"></script>
+    <script src="../AntFarm.Ant.js"></script>
+    <script src="../bower_components/codemirror/lib/codemirror.js"></script>
+    <script src="../bower_components/codemirror/mode/javascript/javascript.js"></script>
+
+    <script>
+      var field;
+
+      jQuery(document).ready(function($) {
+
+        field = new AntFarm.Field(50);
+
+        field.populate(AntFarm.Ant,5);
+
+        field.objects[0].teach($('#script').html());
+
+        // leave some new random leaves
+        for (var i = 0; i < 10; i++) {
+          field.leaf(Math.random() * field.width, Math.random() * field.height, 20);
+        }
+
+        // leave a new random leaf every 30 seconds:
+        setInterval(function() {
+          field.leaf(Math.random() * field.width, Math.random() * field.height, 20);
+        }, 30000);
+
+      });
+    </script>
+
+  </head>
+
+  <body>
+
+    <div class="container-fluid">
+
+      <div class="field">
+        
+      </div>
+
+      <p class="controls">
+        <a class="btn btn-lg on-off" onClick="field.togglePlay();"><i class="fa fa-pause"></i></a>
+        <a class="btn btn-lg" href="https://github.com/jywarren/antfarm/wiki#Examples"><i class="fa fa-book"></i></a>
+      </p>
+
+      <p class="title">
+        <a class="btn btn-lg" href="https://github.com/jywarren/antfarm"><i class="fa fa-github"></i></a>
+        <b>Antfarm</b>
+      </p>
+ 
+    </div>
+
+    <div class="modal modal-code fade">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <b>Editing Ant</b>
+          </div>
+   
+         <div class="modal-body" style="max-height:600px;">
+            <textarea class="script"></textarea>
+          </div>
+      
+          <div class="modal-footer">
+            <a class="btn" target="_blank" href="https://github.com/jywarren/antfarm/wiki">Docs</a>
+            <a class="btn btn-gist" target="_blank">Save as Gist</a>
+            <a data-dismiss="modal" href="#" class="btn">Close</a>
+            <a data-dismiss="modal" href="#" class="btn btn-primary save-all">Save for all same color ants</a>
+            <a data-dismiss="modal" href="#" class="btn btn-primary save">Save</a>
+          </div>
+    
+        </div>
+      </div>
+    </div>
+
+    <script id="script" type="javascript/ant">// set basic attributes here;
+// "this" means this ant you're editing now
+onRun = function () {
+
+  ant.direction += Math.random()*10-5; // vary direction slightly, randomly, in degrees
+  ant.trail('blue', 100); // leave a trail of <color>, <amount>
+
+}
+
+onBump = function () {
+
+  // change direction by 90 degrees:
+  ant.direction += 90;
+
+}
+
+onTouch = function (neighbor) {
+
+  // change direction by 90 degrees:
+  ant.direction += 90;
+  console.log('bump')
+
+}
+</script>
+
+  </body>
+
+</html>
