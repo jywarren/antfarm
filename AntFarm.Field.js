@@ -38,9 +38,13 @@ AntFarm.Field = Class.extend({
       }
  
       $('.field').on('dblclick', function(e) {
- 
-        field.leaf(e.offsetX, e.offsetY, 20);
- 
+        var lionFood = $('.lion-food i').attr('class'); 
+         // $('.on-off i')
+        if(lionFood == 'fa fa-bug') {
+           field.leaf(e.offsetX, e.offsetY, 20);
+        } else { // 'fa fa-leaf'
+           field.antLion(e.offsetX, e.offsetY, 20);
+        }
       });
  
       $('.field').on('mousedown', function(e) {
@@ -55,8 +59,8 @@ AntFarm.Field = Class.extend({
  
         if (field.drawing) {
           var penSize = 20;
-          field.canvas.fillStyle = "red";
-          field.canvas.fillRect(e.offsetX - penSize/2, e.offsetY - penSize/2, penSize, penSize);
+        //  field.canvas.fillStyle = "red";
+         // field.canvas.fillRect(e.offsetX - penSize/2, e.offsetY - penSize/2, penSize, penSize);
         }
  
       });
@@ -112,6 +116,11 @@ AntFarm.Field = Class.extend({
       field.playing = !field.playing;
       $('.on-off i').toggleClass('fa-play');
       $('.on-off i').toggleClass('fa-pause');
+    }
+    
+    field.toggleLionFood = function() {
+      $('.lion-food i').toggleClass('fa-bug');
+      $('.lion-food i').toggleClass('fa-leaf');
     }
 
     field.interval = setInterval(field.run,interval);
@@ -222,7 +231,10 @@ AntFarm.Field = Class.extend({
       field.canvas.fillStyle = "rgba(0,255,0,1)";
       field.canvas.fillRect(x - leafSize/2, y - leafSize/2, leafSize, leafSize);
     }
-
+    
+    field.antLion = function(x, y, leafSize) {
+      field.canvas.fillStyle = "rgba(255,167,0,1)";
+      field.canvas.fillRect(x - leafSize/2, y - leafSize/2, leafSize, leafSize);
+    }
   }
-
 });
