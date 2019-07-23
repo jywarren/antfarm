@@ -39,11 +39,11 @@ AntFarm.Field = Class.extend({
  
       $('.field').on('dblclick', function(e) {
         var lionFood = $('.lion-food i').attr('class'); 
-         // $('.on-off i')
-        if(lionFood == 'fa fa-bug') {
-           field.leaf(e.offsetX, e.offsetY, 20);
-        } else { // 'fa fa-leaf'
+          
+        if(lionFood == 'fa fa-leaf') {     
            field.antLion(e.offsetX, e.offsetY, 20);
+        } else { // 'fa fa-leaf'
+           field.leaf(e.offsetX, e.offsetY, 20);
         }
       });
  
