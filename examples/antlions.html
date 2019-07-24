@@ -129,8 +129,14 @@ onRun = function () {
         
       if (child.red() == 255 && child.green() == 167) { // fell into ant-lion pit
         
-        child.color = 'grey';
-        child.die(17);
+        child.speed = 0;
+        child.direction = Math.random()*180 - 90; // struggle
+        child.energy -= 10;
+        
+        if (child.energy <= 11) {
+            child.color = 'grey';
+            child.die(17); // no food dropped
+        }
         
       } else if (child.color != 'purple' && child.green() > 0) { // eat
 
