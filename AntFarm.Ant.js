@@ -149,14 +149,16 @@ AntFarm.Ant = Class.extend({
 
 
     // replace ant with green 'food'
-    ant.die = function() {
+    ant.die = function(val) {
       ant.remove();
 
       field.canvas.save();
         // to do rotation, we need a better origin
         // field.canvas.rotate(ant.direction / 180 * Math.PI);
-        field.canvas.fillStyle = "green";
-        field.canvas.fillRect(ant.x - ant.width/2, ant.y - ant.height/2, ant.width, ant.height);
+        if (typeof val == "undefined") {
+            field.canvas.fillStyle = "green";
+            field.canvas.fillRect(ant.x - ant.width/2, ant.y - ant.height/2, ant.width, ant.height);
+        }    
       field.canvas.restore();
     }
 
